@@ -5,8 +5,8 @@ https://cloud.ibm.com/catalog/services/language-translator) plan with the Watson
 
 ## Watson Natural Language Translator Service
 
-These apps are using my own personal service with the Watson Natural Language Translator, for these to work on your computer you will require your IBM Cloud account and a Watson Natural Language Translator Service instance which you can set up [here](
-https://cloud.ibm.com/catalog/services/language-translator). Once you have set this up you're going to need set up environmental variables and store them in a `.env` file and keep that in the same directory that holds your R files. The structure of the `.env` files should be:
+These apps are using my own personal instance with the Watson Natural Language Translator Service, for these to work on your computer you will require your [IBM Cloud](https://cloud.ibm.com/registration) account and a Watson Natural Language Translator Service instance which you can set up [here](
+https://cloud.ibm.com/catalog/services/language-translator). Once you have set this up, you're going to need set up environmental variables and store them in a `.env` file and keep that in the same directory that holds your R files. The structure of the `.env` files should be:
 
 ```
 apikey="PUTYOURAPIKEYHERE"
