@@ -7,6 +7,13 @@ library(stringi)
 library(stringr)
 library(utils)
 library(dotenv)
+load_dot_env()
+
+# Obtain the API Key and Instance URL from the .env file where they are saved as environmental variable
+apikey <- Sys.getenv("apikey")
+url <- Sys.getenv("url")
+
+# Supported languages: https://cloud.ibm.com/docs/language-translator?topic=language-translator-translation-models
 
 # Direct Translation
 watson_language_direct_translator <- function(input_text, apikey, url, source_language, target_language) {
@@ -45,6 +52,13 @@ watson_language_direct_translator <- function(input_text, apikey, url, source_la
   
 }
 
+# Example
+watson_language_direct_translator(input_text = c("Hi Junaid, how are you?", "Can I help you with anything?", "I would like to visit Belo-Horizonte."),
+                                  apikey = apikey,
+                                  url = url,
+                                  source_language = "en",
+                                  target_language = "pt")
+
 # Language Identifier
 watson_language_identifier <- function(input_text, apikey, url) {
   headers = c(
@@ -68,21 +82,8 @@ watson_language_identifier <- function(input_text, apikey, url) {
   
 }
 
-# Watson Auto-Identify and Translate
-watson_language_auto_translate <- function(input_text, apikey, url, target_language) {
-  
-  languages_identification <- watson_language_identifier(input_text = input_text, apikey = apikey, url = url)
-  
-  source_language <- languages_identification[[1]][1,1]
-  
-  translated_text <- watson_language_direct_translator(input_text = input_text,
-                                                       apikey = apikey,
-                                                       url = url,
-                                                       source_language = source_language,
-                                                       target_language = target_language)
-  
-  return(translated_text)
-}
+# Example
+watson_language_identifier(input_text = c("was machst du gern auf dem freitziet."), apikey = apikey, url = url)
 
 # Document Translation
 watson_language_document_translator <- function(apikey, url, input_filepath, source_lang, target_lang) {
@@ -136,87 +137,28 @@ watson_language_document_translator <- function(apikey, url, input_filepath, sou
   
 }
 
-# Vector of supported Languages
-lang <- c('ar'
-          ,'ko'
-          ,'eu'
-          ,'lv'
-          ,'bn'
-          ,'lt'
-          ,'bs'
-          ,'ms'
-          ,'bg'
-          ,'ml'
-          ,'ca'
-          ,'mt'
-          ,'zh'
-          ,'cnr'
-          ,'zh-TW'
-          ,'ne'
-          ,'hr'
-          ,'nb'
-          ,'cs'
-          ,'pl'
-          ,'da'
-          ,'pt'
-          ,'nl'
-          ,'ro'
-          ,'en'
-          ,'ru'
-          ,'et'
-          ,'sr'
-          ,'fi'
-          ,'si'
-          ,'fr'
-          ,'sk'
-          ,'fr'
-          ,'sl'
-          ,'de'
-          ,'es'
-          ,'el'
-          ,'sv'
-          ,'gu'
-          ,'ta'
-          ,'he'
-          ,'te'
-          ,'hi'
-          ,'th'
-          ,'hu'
-          ,'tr'
-          ,'ga'
-          ,'uk'
-          ,'id'
-          ,'ur'
-          ,'it'
-          ,'vi'
-          ,'ja'
-          ,'cy')
+# Example
+watson_language_document_translator(apikey = apikey,
+                           url = url,
+                           input_filepath = '~/developer/project_norwegian_defence/sample_russian_file.txt',
+                           source_lang = 'ru',
+                           target_lang = 'en')
 
-lang_names <- c('Arabic', 'Korean', 'Basque',
-                'Latvian', 'Bengali', 'Lithuanian',
-                'Bosnian', 'Malay', 'Bulgarian',
-                'Malayalam', 'Catalan', 'Maltese',
-                'Simplified Chinese', 'Montenegrin', 'Traditional Chinese',
-                'Nepali', 'Croatian', 'Norwegian Bokmal',
-                'Czech', 'Polish', 'Danish',
-                'Portuguese', 'Dutch', 'Romanian',
-                'English', 'Russian', 'Estonian',
-                'Serbian', 'Finnish', 'Sinhala',
-                'French', 'Slovak', 'Canadian French',
-                'Slovenian', 'German', 'Spanish',
-                'Greek', 'Swedish', 'Gujarati',
-                'Tamil', 'Hebrew', 'Telugu',
-                'Hindi', 'Thai', 'Hungarian',
-                'Turkish', 'Irish', 'Ukrainian',
-                'Indonesian', 'Urdu', 'Italian', 'Vietnamese',
-                'Japanese', 'Welsh')
+# Watson Auto-Identify and Translate
+watson_language_auto_translate <- function(input_text, apikey, url, target_language) {
+  
+  languages_identification <- watson_language_identifier(input_text = input_text, apikey = apikey, url = url)
+  
+  source_language <- languages_identification[[1]][1,1]
+  
+  translated_text <- watson_language_direct_translator(input_text = input_text,
+                                                       apikey = apikey,
+                                                       url = url,
+                                                       source_language = source_language,
+                                                       target_language = target_language)
+  
+  return(translated_text)
+}
 
-languages <- lang
-names(languages) <- lang_names
-
-
-
-
-
-
-
+# Example
+watson_language_auto_translate(input_text = c("Posso ajudá-lo com alguma coisa?"), apikey = apikey, url = url, target_language = "en")

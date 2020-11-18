@@ -78,7 +78,7 @@ server <- function(input, output, session) {
   translated_text <- eventReactive(input$run,
                                      { 
                                          
-                                         watson_language_translator(apikey = Sys.getenv("apikey"),
+                                       watson_language_document_translator(apikey = Sys.getenv("apikey"),
                                                                     url = Sys.getenv("url"),
                                                                     input_filepath = filepath(),
                                                                     source_lang = input$source,
