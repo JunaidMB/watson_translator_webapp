@@ -1,0 +1,9 @@
+Each of us has to perform the task of visual search multiple times a day.  We have shown that the search for a combination of attributes works equally well regardless of the ease of grouping the elements.  This is possible thanks to the construction of a priority map that analyzes several topics in parallel, " Vladislav Khvostov, one of the authors of the work, told the paper. 
+
+One of the most complex and common tasks for the human brain and all other multicolecular animals is the discovery of dangerous or useful objects and creatures in visual or other data that perceive the eyes or other senses.  Scientists have been exploring the algorithms of the brain of different organisms for a long time trying to learn how this ability evolved in the course of evolution.  Such "inventions" of evolution can then be used to create computer vision systems. 
+
+In particular, such experiences show that it is much easier for people to search for items if they are grouped according to certain categories and attributes, such as form or colour.  As a rule, the more the items differ from each other on these topics, the faster the visual search is working. 
+
+Many scientists, as the Tailov and his colleagues observe, now believe that the brain uses similar categories to repeatedly process the image, consistently selecting pictures with the desired characteristics and reducing the field  Search.
+
+
