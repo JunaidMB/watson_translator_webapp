@@ -13,7 +13,7 @@ load_dot_env()
 ui <- fluidPage(
   
   # App title ----
-  titlePanel("Watson Translator Webapp"),
+  titlePanel("Watson Natural Language Translator"),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -21,25 +21,10 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(
       
-      # Upload Document
-      shinyFilesButton("upload", "Upload Document to Translate" ,
-                       title = "Select", multiple = FALSE,
-                       buttonType = "default", class = NULL),
-      
-      #fileInput(inputId = "upload", label = "Upload Document to Translate", buttonLabel = "Upload"),
-      
-      # Input filepath
-      #textInput(inputId = "filepath", label = "Filepath of Document to Translate"),
-      
-      # Source Language
-      selectInput(inputId = 'source', label = 'Enter Source Language', choices = languages, selectize=FALSE),
-      
       # Target Language
-      selectInput(inputId = 'target', label = 'Enter Target Language', choices = languages, selectize=FALSE),
+      selectInput(inputId = 'target_language', label = 'Enter Target Language', choices = languages, selectize=FALSE, selected = "en"),
       
-      actionButton(inputId = "run", label = "Run"),
-      
-      downloadButton(outputId = "download", label = "Download")
+      actionButton(inputId = "run", label = "Run")
       
       
     ),
@@ -47,9 +32,12 @@ ui <- fluidPage(
     # Main panel for displaying outputs ----
     mainPanel(
       
-      h2("Translated Text"),
+      h2("Enter Text to Translate"),
       
-      textOutput(outputId = "translation")
+      textAreaInput(inputId = "input_text", label = "Input Text", width = "1000px", height = "250px"),
+      
+      h2("Translated Text"),
+      htmlOutput("translation")
       
     )
   )
@@ -58,50 +46,20 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram ----
 server <- function(input, output, session) {
   
-  # Filepath 
-  volumes <- getVolumes()
-  shinyFileChoose(input, id = "upload", roots = volumes, session = session, filetypes = c("txt"))
   
-  filepath <- reactive({
+  translated_text <- eventReactive(input$run, {
     
-    req(input$upload)
-    if(!is.null(input$upload)) {
-      file_selected <- parseFilePaths(volumes, input$upload)
-    }
     
-    as.character(file_selected$datapath) 
-    
-    })
-    
-
+    output_object <- watson_language_auto_translate(input_text = input$input_text,
+                                                    apikey = Sys.getenv("apikey"),
+                                                    url = Sys.getenv("url"),
+                                                    target_language = input$target_language)
+    output_object$translations[,1]
+  })
   
-  translated_text <- eventReactive(input$run,
-                                     { 
-                                         
-                                       watson_language_document_translator(apikey = Sys.getenv("apikey"),
-                                                                    url = Sys.getenv("url"),
-                                                                    input_filepath = filepath(),
-                                                                    source_lang = input$source,
-                                                                    target_lang = input$target) }) 
-                                       
-    
-  output$translation <- renderText({translated_text()})
-    
-   
-    
-    output$download <- downloadHandler(
-      filename = function() {
-        paste0("translated_file_", input$target, ".txt")
-      },
-      content = function(file) {
-
-          write_lines(translated_text(), path = file)
-
-      }
-    )
-     
-    
-
+  output$translation <- renderText({ translated_text() })
+  
+  
   
 }
 
