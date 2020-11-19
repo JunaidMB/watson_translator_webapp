@@ -140,7 +140,7 @@ watson_language_document_translator <- function(apikey, url, input_filepath, sou
 # Example
 watson_language_document_translator(apikey = apikey,
                            url = url,
-                           input_filepath = '~/developer/project_norwegian_defence/sample_russian_file.txt',
+                           input_filepath = './sample_russian_file.txt/sample_russian_file.txt',
                            source_lang = 'ru',
                            target_lang = 'en')
 
