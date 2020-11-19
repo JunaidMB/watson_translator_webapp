@@ -37,7 +37,8 @@ ui <- fluidPage(
       textAreaInput(inputId = "input_text", label = "Input Text", width = "1000px", height = "250px"),
       
       h2("Translated Text"),
-      htmlOutput("translation")
+      
+      verbatimTextOutput("translation"),
       
     )
   )
@@ -57,7 +58,8 @@ server <- function(input, output, session) {
     output_object$translations[,1]
   })
   
-  output$translation <- renderText({ translated_text() })
+
+  output$translation <- renderText({  translated_text()  }, sep = "\n")
   
   
   
